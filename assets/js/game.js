@@ -61,7 +61,10 @@ var fight = function() {
 else {
     fight();
 }
-}
+// if player did not chose  anything in the prompt.
+} else {
+    window.alert("You need to pick a valid option. Try again!");
+    }
 };
 
 fight();
