@@ -48,32 +48,35 @@ var enemyInfo = [
 
 // fight function (now with parameter for enemy's name)
 var fight = function(enemy.name) {
+  //keep track of who goes first
+  var isPlayerTurn = true;
   
+  if (Math.random() > 0.5) {
+    isPlayerTurn = false;
+  }
+
   while ( playerInfo.health > 0 && enemy.health > 0) {
-    // ask player if they'd like to fight or run
-    var promptFight = window.prompt('Would you like to FIGHT or SKIP this battle? Enter "FIGHT" or "SKIP" to choose.');
+    if (isPlayerTurn) {
 
-    // if player picks "skip" confirm and then stop the loop
-    if (promptFight === "skip" || promptFight === "SKIP") {
-      // confirm player wants to skip
-      var confirmSkip = window.confirm("Are you sure you'd like to quit?");
-
-      // if yes (true), leave fight
-      if (confirmSkip) {
-        window.alert(playerInfo.name + ' has decided to skip this fight. Goodbye!');
-        // subtract money from playerInfo.money for skipping
-        playerInfo.money = Math.max(0, playerInfo.money - 10);
-        console.log("playerInfo.money", playerInfo.money);
-        break;
-      }
+    // ask player if they'd like to fight or skip using foght or skip function.
+    if (fightOrSkip()) {
+      //if true, leve fight by breaking loop
+      break;
     }
-
-    // remove enemy's health by subtracting the amount set in the playerAttack variable
-    //generate random damage value based on player's attack power
+    
+    
     var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
+    // remove enemy's health by subtracting the amount set in the playerAttack variable
     enemy.health = Math.max(0, enemy.health - damage);
     console.log(
-      playerInfo.name + ' attacked ' + enemy.name + '. ' + enemy.name + ' now has ' + enemy.health + ' health remaining.'
+      playerInfo.name + 
+      " attacked " +
+      enemy.name +
+       ". " +
+      enemy.name +
+      " now has " +
+       enemy.health + "
+       health remaining."
     );
 
     // check enemy's health
@@ -81,20 +84,28 @@ var fight = function(enemy.name) {
       window.alert(enemy.name + 'has died!');
 
       // award player money for winning
-      playerInfo.money = Math.max(0, playerInfo.money -10);
+      playerInfo.money = Math.max(0, playerInfo.money + 20);
 
       // leave while() loop since enemy is dead
       break;
     } else {
-      window.alert(enemy.name + ' still has ' + enemy.health + ' health left.');
+      window.alert(enemy.name + " still has " + enemy.health + " health left.");
     }
-
+    //player gets attacked first
+  } else{
     // remove players's health by subtracting the amount set in the enemyAttack variable
     var damage = randomNumber(enemy.attack - 3, enemy.attack);
 
     playerInfo.health = Math.max(0, playerInfo.health - damage);
     console.log(
-      enemy.name + ' attacked ' + playerInfo.name + '. ' + playerInfo.name + ' now has ' + playerInfo.health + ' health remaining.'
+      enemy.name + 
+      " attacked " +
+      playerInfo.name +
+      '. ' +
+      playerInfo.name + 
+      ' now has ' +
+      playerInfo.health + 
+      ' health remaining.'
     );
 
     // check player's health
@@ -105,6 +116,9 @@ var fight = function(enemy.name) {
     } else {
       window.alert(playerInfo.name + ' still has ' + playerInfo.health + ' health left.');
     }
+  }
+  //switch turn order for next round
+  isPlayerTurn = !isPlayerTurn;
   }
 };
 // function to start a new game
